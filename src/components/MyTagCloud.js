@@ -1,27 +1,49 @@
-import React from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import TagCloud from 'react-tag-cloud';
+import randomColor from 'randomcolor';
+import _ from "lodash"
 
-const MyTagCloud = ({ wordList }) => {
+let MyTagCloud = forwardRef(({ wordList }, ref) => {
+    //const { wordList } = props
+    //console.log("Tag cloud rendered again ...", wordList, word)
+    // useEffect(() => {
+    //     console.log(" R ----------> ", word)
+    // }, [word])
+
+
+    const changeWord = (newWord) => {
+        //setWord(_ => newWord)
+        wordList.forEach(w => {
+            const existing = document.getElementById(`__${w}__`)
+            existing?.classList.remove(...["transition", "duration-500", "ease-in-out", "animate-pulse", "text-red-500"])
+        })
+
+        const el = document.getElementById(`__${newWord}__`)
+        el?.classList.add(...["transition", "duration-500", "ease-in-out", "animate-pulse", "text-red-500"])
+    }
+
+    if (ref) {
+        console.log("REF IS ... ", ref)
+        ref.current = { changeWord };
+    }
+
     return (
         <div className="flex h-full justify-center items-center">
             <div className="w-full h-full bg-transparent">
                 <TagCloud
-                    key={1}
+                    className="font-opensans"
                     style={{
                         display: "block",
-                        fontFamily: 'opensans',
-                        // fontSize: 30,
-                        // fontWeight: 'bold',
+                        //fontFamily: 'font-opensans',
+                        fontSize: 30,
+                        fontWeight: 'bold',
                         //color: () => randomColor(),
                         padding: 5,
                         width: '100%',
                         height: '100%'
                     }}>
-                    {wordList.map(word => {
-                        console.log("Tag cloud rendered again ...")
-                        return (
-                            <div style={{ fontSize: 20 }}>{word}</div>
-                        )
+                    {wordList.map(w => {
+                        return <div key={w} id={`__${w}__`} className="_word text-lg font-semibold">{w}</div>
                     })}
 
                     {/* <div style={{ fontSize: 50 }}>react</div>
@@ -37,6 +59,9 @@ const MyTagCloud = ({ wordList }) => {
             </div>
         </div>
     )
-}
+})
 
-export default React.memo(MyTagCloud)
+export default React.memo(MyTagCloud, ({ wordList: owl }, { wordList: nwl }) => {
+    // console.log("R E T U R N I N G --> ", _.isEqual(owl, nwl), _.isEqual(ow, nw))
+    return (_.isEqual(owl, nwl))
+})

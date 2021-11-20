@@ -29,6 +29,7 @@ const wordList = [
 
 const Experiment = () => {
     const [word, setWord] = useState(wordList[0])
+    const tagRef = useRef(null)
 
     const onBubbled = (w) => {
         const randomIndex = (max) => {
@@ -39,13 +40,15 @@ const Experiment = () => {
         const wordIdx = randomIndex(rest.length)
         console.log("Finished animation .... starting ...", wordList[wordIdx])
         setWord(_ => rest[wordIdx])
+        tagRef?.current?.changeWord(w)
     }
 
     return (
         <div id="experiment" className="relative w-full min-w-full h-screen min-h-screen 
         px-2
         text-gray-800">
-            <MyTagCloud key={"do-not-change"} wordList={wordList} />
+            <h1 className="font-opensans text-5xl">SOMETHING</h1>
+            <MyTagCloud ref={tagRef} wordList={wordList} word={word} />
             <BubbleWord word={word} onBubbled={onBubbled} />
         </div >
     )

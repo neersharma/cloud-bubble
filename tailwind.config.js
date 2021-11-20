@@ -4,6 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      fontFamily: {
+        'opensans': ['"Open Sans"']
+      },
       keyframes: {
         '_bubble': {
           '0%': { transform: 'translateY(100%)' },
@@ -24,10 +27,34 @@ module.exports = {
           '80%': { marginTop: '20%', opacity: 0.6 },
           '90%': { marginTop: '10%', opacity: 0.3 },
           '100%': { marginTop: '0', opacity: 0 },
+        },
+        phade: {
+          '0%': {
+            opacity: 0,
+            transform: `translateY(-100px) skewY(10deg) skewX(10deg) rotateZ(30deg)`,
+            filter: 'blur(10px)'
+          },
+          '25%': {
+            opacity: 1,
+            transform: `translateY(0px) skewY(0deg) skewX(0deg) rotateZ(0deg)`,
+            filter: 'blur(0px)'
+          },
+          '75%': {
+            opacity: 1,
+            transform: `translateY(0px) skewY(0deg) skewX(0deg) rotateZ(0deg)`,
+            filter: 'blur(0px)'
+          },
+          '100%': {
+            opacity: 0,
+            transform: `translateY(-100px) skewY(10deg) skewX(10deg) rotateZ(30deg)`,
+            filter: 'blur(10px)'
+          }
+
         }
       },
       animation: {
-        'bubble': 'bubble 3s linear forwards'
+        'bubble': 'bubble 3s linear forwards',
+        "phade": 'phade 2s infinite forwards'
       }
     },
   },
