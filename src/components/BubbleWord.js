@@ -24,8 +24,7 @@ const wordList = [
     "AbcTEXT10",
 ]
 
-const BubbleWord = ({ wordList }) => {
-    const [word, setWord] = useState(wordList[0])
+const BubbleWord = ({ word, onBubbled }) => {
 
     useEffect(() => {
         console.log("... ", word)
@@ -44,11 +43,7 @@ const BubbleWord = ({ wordList }) => {
             el.removeEventListener("animationend", animationEnd)
 
             if (idx === word.length - 1) {
-                // This is the end of one word. Choose a different word now.
-                const rest = wordList.filter(x => x !== word)
-                const wordIdx = randomIndex(rest.length)
-                console.log("Finished animation .... starting ...", wordList[wordIdx])
-                setWord(_ => rest[wordIdx])
+                onBubbled(word)
             } else {
                 //el.classList.add("hidden")
             }

@@ -10,14 +10,15 @@ const MyTagCloud = ({ wordList }) => {
                     style={{
                         display: "block",
                         fontFamily: 'opensans',
-                        fontSize: 30,
-                        fontWeight: 'bold',
+                        // fontSize: 30,
+                        // fontWeight: 'bold',
                         //color: () => randomColor(),
                         padding: 5,
                         width: '100%',
                         height: '100%'
                     }}>
                     {wordList.map(word => {
+                        console.log("Tag cloud rendered again ...")
                         return (
                             <div style={{ fontSize: 20 }}>{word}</div>
                         )
@@ -38,4 +39,4 @@ const MyTagCloud = ({ wordList }) => {
     )
 }
 
-export default MyTagCloud
+export default React.memo(MyTagCloud)

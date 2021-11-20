@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import TagCloud from "../components/MyTagCloud";
-import randomColor from 'randomcolor';
+import MyTagCloud from "../components/MyTagCloud";
 import BubbleWord from "../components/BubbleWord";
 
 // Following
@@ -29,12 +28,25 @@ const wordList = [
 ]
 
 const Experiment = () => {
+    const [word, setWord] = useState(wordList[0])
+
+    const onBubbled = (w) => {
+        const randomIndex = (max) => {
+            return Math.floor(Math.random() * max);
+        }
+
+        const rest = wordList.filter(x => x !== w)
+        const wordIdx = randomIndex(rest.length)
+        console.log("Finished animation .... starting ...", wordList[wordIdx])
+        setWord(_ => rest[wordIdx])
+    }
+
     return (
         <div id="experiment" className="relative w-full min-w-full h-screen min-h-screen 
         px-2
         text-gray-800">
-            <TagCloud wordList={wordList}></TagCloud>
-            <BubbleWord wordList={wordList} />
+            <MyTagCloud key={"do-not-change"} wordList={wordList} />
+            <BubbleWord word={word} onBubbled={onBubbled} />
         </div >
     )
 }
