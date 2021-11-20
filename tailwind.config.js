@@ -14,15 +14,15 @@ module.exports = {
         },
         bubble: {
           '0%': { marginTop: '100%', opacity: 0.9 },
-          '10%': { marginTop: '90%', opacity: 0.5 },
+          '10%': { marginTop: '90%', opacity: 0.3 },
           '20%': { marginTop: '80%', opacity: 0.5 },
-          '30%': { marginTop: '70%', opacity: 0.7 },
+          '30%': { marginTop: '70%', opacity: 0.6 },
           '40%': { marginTop: '60%', opacity: 0.7 },
           '50%': { marginTop: '50%', opacity: 0.8 },
           '60%': { marginTop: '40%', opacity: 0.8 },
           '70%': { marginTop: '30%', opacity: 0.7 },
           '80%': { marginTop: '20%', opacity: 0.7 },
-          '90%': { marginTop: '10%', opacity: 0.5 },
+          '90%': { marginTop: '10%', opacity: 0.3 },
           '100%': { marginTop: '0', opacity: 0 },
         }
       },
