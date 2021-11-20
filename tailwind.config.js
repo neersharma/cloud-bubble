@@ -28,6 +28,9 @@ module.exports = {
           '90%': { marginTop: '10%', opacity: 0.3 },
           '100%': { marginTop: '0', opacity: 0 },
         },
+        blinker2: {
+          "50%": { opacity: "0.0" }
+        },
         phade: {
           '0%': {
             opacity: 0,
@@ -53,8 +56,9 @@ module.exports = {
         }
       },
       animation: {
-        'bubble': 'bubble 3s linear forwards',
-        "phade": 'phade 2s infinite forwards'
+        'bubble': 'bubble 5s linear forwards',
+        "phade": 'phade 2s infinite forwards',
+        "blinker2": 'blinker2 3s infinite forwards'
       }
     },
   },

@@ -1,9 +1,10 @@
 import React, { forwardRef, useEffect, useState } from 'react'
-import TagCloud from 'react-tag-cloud';
+//import TagCloud from 'react-tag-cloud';
+import { TagCloud } from 'react-tagcloud'
 import randomColor from 'randomcolor';
 import _ from "lodash"
 
-let MyTagCloud = forwardRef(({ wordList }, ref) => {
+let MyTagCloud = forwardRef(({ tags }, ref) => {
     //const { wordList } = props
     //console.log("Tag cloud rendered again ...", wordList, word)
     // useEffect(() => {
@@ -11,15 +12,19 @@ let MyTagCloud = forwardRef(({ wordList }, ref) => {
     // }, [word])
 
 
+    const animation = `blinker2 3s linear infinite`
+
     const changeWord = (newWord) => {
         //setWord(_ => newWord)
-        wordList.forEach(w => {
-            const existing = document.getElementById(`__${w}__`)
-            existing?.classList.remove(...["transition", "duration-500", "ease-in-out", "animate-pulse", "text-red-500"])
+        console.log("changed word ==> ", newWord)
+        tags.forEach(({ value: w }) => {
+            const el = document.getElementById(`__${w}__`)
+            //delete el?.style["animation"]
+            el.style["animation"] = ""
         })
 
         const el = document.getElementById(`__${newWord}__`)
-        el?.classList.add(...["transition", "duration-500", "ease-in-out", "animate-pulse", "text-red-500"])
+        el.style["animation"] = animation
     }
 
     if (ref) {
@@ -27,37 +32,33 @@ let MyTagCloud = forwardRef(({ wordList }, ref) => {
         ref.current = { changeWord };
     }
 
-    return (
-        <div className="flex h-full justify-center items-center">
-            <div className="w-full h-full bg-transparent">
-                <TagCloud
-                    className="font-opensans"
-                    style={{
-                        display: "block",
-                        //fontFamily: 'font-opensans',
-                        fontSize: 30,
-                        fontWeight: 'bold',
-                        //color: () => randomColor(),
-                        padding: 5,
-                        width: '100%',
-                        height: '100%'
-                    }}>
-                    {wordList.map(w => {
-                        return <div key={w} id={`__${w}__`} className="_word text-lg font-semibold">{w}</div>
-                    })}
+    const customRenderer = (tag, size, color) => (
+        <span
+            key={tag.value}
+            id={`__${tag.value}__`}
+            style={{
+                //animation: 'blinker2 3s linear infinite',
+                animationDelay: `${Math.random() * 2}s`,
+                fontSize: `${size / 2}rem`,
+                //border: `2px solid ${color}`,
+                fontFamily: "Open Sans",
+                margin: '3px',
+                padding: '3px',
+                display: 'inline-block',
+            }}
+            className="text-gray-900"
+        >
+            {tag.value}
+        </span>
+    )
 
-                    {/* <div style={{ fontSize: 50 }}>react</div>
-                    <div style={{ color: 'green' }}>tag</div>
-                    <div rotate={90}>cloud</div>
-                    <div style={{ fontSize: 50 }}>react2</div>
-                    <div style={{ color: 'green' }}>tag2</div>
-                    <div rotate={90}>cloud2</div>
-                    <div style={{ fontSize: 50 }}>react3</div>
-                    <div style={{ color: 'green' }}>tag3</div>
-                    <div rotate={90}>cloud3</div> */}
-                </TagCloud>
-            </div>
+
+    return (
+
+        <div className="inline-block">
+            <TagCloud tags={tags} minSize={1} maxSize={5} renderer={customRenderer} />
         </div>
+
     )
 })
 

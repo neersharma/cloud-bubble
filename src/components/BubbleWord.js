@@ -25,16 +25,8 @@ const wordList = [
 ]
 
 const BubbleWord = ({ word, onBubbled }) => {
-
     useEffect(() => {
-        console.log("... ", word)
-        const randomIndex = (max) => {
-            return Math.floor(Math.random() * max);
-        }
-
         const animationStart = (ev) => {
-            //console.log(ev.target.innerText)
-
             // No-Op wait.
             setTimeout(() => { }, 1000) //console.log("Waiting ... ", ev.target.innerText) }, 1000)
         }
@@ -49,12 +41,14 @@ const BubbleWord = ({ word, onBubbled }) => {
             }
         }
 
+        const randomWait = (max) => Math.floor(Math.random() * max);
+
         [...word].forEach((w, idx) => {
             const L = document.getElementById(`__L__${idx}`);
             setTimeout(() => {
                 //console.log("L .... ", L?.innerText)
                 L?.classList.add("animate-bubble")
-            }, idx * 100)
+            }, randomWait(word.length) * 100)
 
             //console.log("Adding event listener")
             L?.addEventListener('animationstart', animationStart);
@@ -65,9 +59,10 @@ const BubbleWord = ({ word, onBubbled }) => {
     return (
         <div className="absolute left-0 top-0 right-0 flex z-10 justify-around bg-transparent">
             {[...word].map((l, idx) => {
-                console.log(word, "  ", l)
+                //console.log(word, "  ", l)
                 //return window.setTimeout(() => {
-                return (<h2 key={`${word}_${idx}_${l}`} id={`__L__${idx}`} className="text-4xl z-10 text-gray-900 mx-3 opacity-0">{l}</h2>)
+                return (<h2 key={`${word}_${idx}_${l}`} id={`__L__${idx}`} className={`text-xl rounded-full bg-blue-800 z-10 text-gray-300 opacity-0 
+                w-12 h-12 flex justify-center items-center`}>{l}</h2>)
                 //}, 500)
 
             })}
