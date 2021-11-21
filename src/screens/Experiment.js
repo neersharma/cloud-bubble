@@ -65,11 +65,16 @@ const Experiment = () => {
     }
 
     return (
-        <div id="experiment" className="relative w-full min-w-full h-screen min-h-screen 
-        px-2
+        <div id="experiment" className="
+        bg-gray-900
         text-gray-800">
-            <MyTagCloud ref={tagRef} tags={tags} />
-            <BubbleWord word={word} onBubbled={onBubbled} />
+            <div className="">
+                <MyTagCloud ref={tagRef} tags={tags} />
+            </div>
+
+            <div className="">
+                <BubbleWord word={word} onBubbled={onBubbled} />
+            </div>
         </div >
     )
 }

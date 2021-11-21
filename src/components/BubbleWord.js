@@ -57,12 +57,12 @@ const BubbleWord = ({ word, onBubbled }) => {
     }, [word])
 
     return (
-        <div className="absolute left-0 top-0 right-0 flex z-10 justify-around bg-transparent">
+        <div className="flex justify-around bg-transparent">
             {[...word].map((l, idx) => {
                 //console.log(word, "  ", l)
                 //return window.setTimeout(() => {
-                return (<h2 key={`${word}_${idx}_${l}`} id={`__L__${idx}`} className={`text-xl rounded-full bg-blue-800 z-10 text-gray-300 opacity-0 
-                w-12 h-12 flex justify-center items-center`}>{l}</h2>)
+                return (<h2 key={`${word}_${idx}_${l}`} id={`__L__${idx}`} className={`text-xl rounded-full bg-red-900 z-10 text-gray-300 opacity-0 shadow-lg
+                w-16 h-16 flex justify-center items-center`}>{l}</h2>)
                 //}, 500)
 
             })}

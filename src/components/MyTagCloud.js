@@ -46,7 +46,7 @@ let MyTagCloud = forwardRef(({ tags }, ref) => {
                 padding: '3px',
                 display: 'inline-block',
             }}
-            className="text-gray-900"
+            className="text-gray-300"
         >
             {tag.value}
         </span>
