@@ -4,6 +4,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      dropShadow: {
+        'xl': '0 35px 35px rgba(34, 45, 56, 0.25)',
+      },
       fontFamily: {
         'opensans': ['"Open Sans"']
       },
@@ -52,7 +55,6 @@ module.exports = {
             transform: `translateY(-100px) skewY(10deg) skewX(10deg) rotateZ(30deg)`,
             filter: 'blur(10px)'
           }
-
         }
       },
       animation: {
