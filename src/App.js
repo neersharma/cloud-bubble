@@ -1,12 +1,12 @@
 //import Home from "./screens/Home"
 
-// import ContentCreator from "./screens/ContentCreator";
+import ContentCreator from "./screens/ContentCreator";
 // import Experiment from "./screens/Experiment"
 // import Home_x from "./screens/Home_x"
 // import NewsPaper from "./screens/NewsPaper"
 // import Upload from "./screens/Upload";
 
-import ContentForm from "./screens/ContentForm";
+//import ContentForm from "./screens/ContentForm";
 
 function App() {
   return (
@@ -17,8 +17,10 @@ function App() {
 
       {/* <NewsPaper></NewsPaper> */}
 
-      {/* <ContentCreator /> */}
-      <ContentForm></ContentForm>
+      <ContentCreator />
+
+      {/* <ContentForm></ContentForm> */}
+
       {/* <Upload /> */}
     </div>
   );

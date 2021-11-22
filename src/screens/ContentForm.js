@@ -3,36 +3,42 @@ import Form from '../components/Form'
 
 const schemas = [
     {
-        "type": "Random",
-        "label": "Random Test",
-        "id": "Random Test",
-        "fields": [
+        component: "Form",
+        type: "Random",
+        label: "Random Test",
+        id: "Random Test",
+        fields: [
             {
-                "type": "field_group",
-                "label": "Name",
-                "id": "name",
-                "fields": [
+                type: "field_group",
+                component: "FieldGroup",
+                label: "Name",
+                id: "name",
+                fields: [
                     {
-                        "label": "First Name",
-                        "type": "text",
-                        "id": "first_name"
+                        component: "Field",
+                        label: "First Name",
+                        type: "text",
+                        id: "first_name"
                     },
                     {
-                        "label": "Last Name",
-                        "type": "text",
-                        "id": "last_name"
+                        component: "Field",
+                        label: "Last Name",
+                        type: "text",
+                        id: "last_name"
                     }
                 ]
             },
             {
-                "label": "Email",
-                "type": "email",
+                component: "Field",
+                label: "Email",
+                type: "email",
                 "id": "email"
             },
             {
-                "label": "Phone",
-                "type": "text",
-                "id": "phone"
+                component: "Field",
+                label: "Phone",
+                type: "text",
+                id: "phone"
             }
         ]
     }
