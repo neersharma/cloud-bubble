@@ -5,7 +5,7 @@ const schemas = [
     {
         "type": "Random",
         "label": "Random Test",
-        "id": "0c946643-5a83-4545-baea-055b27b51e8a",
+        "id": "Random Test",
         "fields": [
             {
                 "type": "field_group",
@@ -41,7 +41,7 @@ const schemas = [
 const ContentForm = () => {
     return (
         <div className="h-screen flex justify-center items-center">
-            <Form schema={schemas[0]} />
+            <Form structure={schemas[0]} />
         </div>
     )
 }

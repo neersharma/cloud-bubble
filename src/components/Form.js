@@ -1,11 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Field = ({ field, type, onValueChange }) => {
-    const [value, setValue] = useState(null)
+const Field = ({ field, type, initialValue, onValueChange }) => {
+    const [value, setValue] = useState(initialValue)
+
+    useEffect(() => {
+        setValue(x => initialValue)
+    }, [initialValue])
 
     return (
-        <div key={field.id} className="md:flex md:items-center mb-6">
-            <div key={field.id} className="md:w-1/3">
+        <div key={field.id} className="md:flex md:items-end mb-6">
+            <div key={field.id} className="md:w-1/3 ">
                 <label className="block text-gray-500 font-semibold md:text-right mb-1 md:mb-0 pr-4"
                     htmlFor={field.id}>{field.label}</label>
             </div>
@@ -19,18 +23,16 @@ const Field = ({ field, type, onValueChange }) => {
                         setValue(e.target.value)
                         onValueChange(field.id, e.target.value)
                     }}
-                    className="bg-gray-50 
+                    className="
                             text-gray-400 
                             appearance-none 
-                            border 
+                            border-b 
                             border-gray-300 
-                            rounded 
                             w-full 
-                            py-2 px-4 
                             leading-tight 
                             focus:text-blue-400 
                             focus:outline-none 
-                            focus:border-2 
+                            focus:border-b-2 
                             focus:border-blue-400" />
 
             </div>
@@ -38,11 +40,9 @@ const Field = ({ field, type, onValueChange }) => {
     )
 }
 
-const FieldGroup = ({ field, onValueChange }) => {
-    const fields = field.fields
-
+const FieldGroup = ({ id, fields, initialValues, onValueChange }) => {
     return (
-        <fieldset key={field.id}>
+        <fieldset key={id}>
 
             {/* <div className="flex">
                 <h4 className="md:w-1/3 md:text-right pr-4 mb-6 font-semibold text-xl text-gray-500">{field.label}</h4>
@@ -54,6 +54,7 @@ const FieldGroup = ({ field, onValueChange }) => {
                     <Field
                         key={field.id}
                         field={field}
+                        initialValue={initialValues[field.id]}
                         onValueChange={onValueChange}
                     ></Field>
                 )
@@ -62,20 +63,17 @@ const FieldGroup = ({ field, onValueChange }) => {
     )
 }
 
-const Form = ({ schema }) => {
+const Form = ({ structure }) => {
     //const [page, setPage] = useState(0)
     //const [currentPageData, setCurrentPageData] = useState(formData[page])
     const [values, setValues] = useState({})
+    const [schema, setSchema] = useState(structure)
 
-    useEffect(() => {
-        //const upcomingPageData = formData[page]
-        //setCurrentPageData(upcomingPageData)
-
+    const initialize = () => {
         setValues(currentValues => {
             const newValues = schema.fields.reduce((obj, field) => {
                 if (field.type === "field_group") {
                     obj = field.fields.reduce((subFieldObj, subField) => {
-                        console.log("Subfield obj", subFieldObj)
                         subFieldObj[subField.id] = ""
 
                         return subFieldObj
@@ -91,25 +89,25 @@ const Form = ({ schema }) => {
 
             return { ...currentValues, ...newValues }
         })
-    }, [schema])
-
-    const fieldValue = (fieldId) => {
-        console.log("GETTING FIELD VALUE .... ", values)
-        return values[fieldId]
     }
+
+    useEffect(() => {
+        //const upcomingPageData = formData[page]
+        //setCurrentPageData(upcomingPageData)
+
+        initialize()
+    }, [schema])
 
     const handleValueChange = (fieldId, value) => {
         //console.log("field id", fieldId, value)
         setValues(currentValues => {
             currentValues[fieldId] = value
-            console.log("field changed ... ", currentValues)
+            //console.log("field changed ... ", currentValues)
             return currentValues
         })
-
-        //setCurrentPageData(currentPageData => ({ ...currentPageData }))
     }
 
-    console.log("V A L U E S is .... ", values)
+    //console.log("V A L U E S is .... ", values)
     const handleSubmit = e => {
         e.preventDefault();
 
@@ -119,7 +117,7 @@ const Form = ({ schema }) => {
     const handleCancel = e => {
         e.preventDefault();
 
-        console.log("Values is ... ", values)
+        setSchema(x => ({ ...x, generatedAt: new Date().getTime() }))
     }
 
     return (
@@ -133,7 +131,9 @@ const Form = ({ schema }) => {
                                 return (
                                     <FieldGroup
                                         key={field.id}
-                                        field={field}
+                                        id={field.id}
+                                        fields={field.fields}
+                                        initialValues={values}
                                         onValueChange={handleValueChange}>
                                     </FieldGroup>
                                 )
@@ -142,13 +142,14 @@ const Form = ({ schema }) => {
                                     <Field
                                         key={field.id}
                                         field={field}
+                                        initialValue={values[field.id]}
                                         onValueChange={handleValueChange}
                                     />
                                 )
                         }
                     })}
 
-                    <div className="md:flex md:items-center mb-6">
+                    <div className="md:flex md:items-center my-6">
                         <div className="md:w-1/3">
                         </div>
                         <div className="w-full">
@@ -167,7 +168,7 @@ const Form = ({ schema }) => {
                      focus:shadow-outline focus:outline-none 
                      text-red-400 font-semibold py-2 px-4 rounded cursor-pointer transform transition duration-500 
                      hover:scale-105" type="button"
-                                onClick={e => { }}>
+                                onClick={e => { handleCancel(e) }}>
                                 Cancel
                             </button>
 
