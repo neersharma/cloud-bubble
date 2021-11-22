@@ -1,45 +1,60 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-const Field = ({ field, type, value, fieldChanged }) => {
+const Field = ({ field, type, onValueChange }) => {
+    const [value, setValue] = useState(null)
+
     return (
-        <div key={field._uid} className="md:flex md:items-center mb-6">
-            <div key={field._uid} className="md:w-1/3">
+        <div key={field.id} className="md:flex md:items-center mb-6">
+            <div key={field.id} className="md:w-1/3">
                 <label className="block text-gray-500 font-semibold md:text-right mb-1 md:mb-0 pr-4"
-                    htmlFor={field._uid}>{field.label}</label>
+                    htmlFor={field.id}>{field.label}</label>
             </div>
             <div className="w-full">
                 <input
-                    type={type || field.component}
-                    id={field._uid}
-                    name={field._uid}
-                    value={value}
-                    onChange={e => fieldChanged(field._uid, e.target.value)}
-                    className="bg-gray-300 appearance-none border 
-                            border-gray-500 rounded w-full py-2 px-4 
-                            text-gray-700 leading-tight focus:outline-none 
-                            focus:bg-white focus:border-purple-50" />
+                    type={type || field.type}
+                    id={field.id}
+                    name={field.id}
+                    value={value || ''}
+                    onChange={e => {
+                        setValue(e.target.value)
+                        onValueChange(field.id, e.target.value)
+                    }}
+                    className="bg-gray-50 
+                            text-gray-400 
+                            appearance-none 
+                            border 
+                            border-gray-300 
+                            rounded 
+                            w-full 
+                            py-2 px-4 
+                            leading-tight 
+                            focus:text-blue-400 
+                            focus:outline-none 
+                            focus:border-2 
+                            focus:border-blue-400" />
 
             </div>
         </div>
     )
 }
 
-const FieldGroup = ({ field, values, fieldChanged }) => {
+const FieldGroup = ({ field, onValueChange }) => {
     const fields = field.fields
 
     return (
-        <fieldset key={field._uid}>
-            <div class="flex">
+        <fieldset key={field.id}>
+
+            {/* <div className="flex">
                 <h4 className="md:w-1/3 md:text-right pr-4 mb-6 font-semibold text-xl text-gray-500">{field.label}</h4>
                 <div className="w-full" />
-            </div>
+            </div> */}
+
             {fields.map(field => {
                 return (
                     <Field
-                        key={field._uid}
+                        key={field.id}
                         field={field}
-                        fieldChanged={fieldChanged}
-                        value={values[field._uid]}
+                        onValueChange={onValueChange}
                     ></Field>
                 )
             })}
@@ -47,78 +62,120 @@ const FieldGroup = ({ field, values, fieldChanged }) => {
     )
 }
 
-const Form = ({ formData }) => {
-    const [page, setPage] = useState(0)
-    const [currentPageData, setCurrentPageData] = useState(formData[page])
+const Form = ({ schema }) => {
+    //const [page, setPage] = useState(0)
+    //const [currentPageData, setCurrentPageData] = useState(formData[page])
     const [values, setValues] = useState({})
 
     useEffect(() => {
-        const upcomingPageData = formData[page]
-        setCurrentPageData(upcomingPageData)
+        //const upcomingPageData = formData[page]
+        //setCurrentPageData(upcomingPageData)
 
         setValues(currentValues => {
-            const newValues = upcomingPageData.fields.reduce((obj, field) => {
-                if (field.component === "field_group") {
-                    const x = field.fields.reduce((subFieldObj, subField) => {
+            const newValues = schema.fields.reduce((obj, field) => {
+                if (field.type === "field_group") {
+                    obj = field.fields.reduce((subFieldObj, subField) => {
                         console.log("Subfield obj", subFieldObj)
-                        subFieldObj[subField._uid] = ""
+                        subFieldObj[subField.id] = ""
 
                         return subFieldObj
-                    }, {})
+                    }, obj)
 
-                    return Object.assign(obj, x)
+                    return obj //Object.assign(obj, x)
                 } else {
-                    obj[field._uid] = ""
+                    obj[field.id] = ""
                 }
 
                 return obj
             }, {})
 
-            return { ...currentValues, newValues }
+            return { ...currentValues, ...newValues }
         })
-    }, [page, formData])
+    }, [schema])
 
-    const fieldChanged = (fieldId, value) => {
+    const fieldValue = (fieldId) => {
+        console.log("GETTING FIELD VALUE .... ", values)
+        return values[fieldId]
+    }
+
+    const handleValueChange = (fieldId, value) => {
+        //console.log("field id", fieldId, value)
         setValues(currentValues => {
             currentValues[fieldId] = value
+            console.log("field changed ... ", currentValues)
             return currentValues
         })
 
-        setCurrentPageData(currentPageData => ({ ...currentPageData }))
+        //setCurrentPageData(currentPageData => ({ ...currentPageData }))
     }
 
-    const onSubmit = e => {
+    console.log("V A L U E S is .... ", values)
+    const handleSubmit = e => {
         e.preventDefault();
+
+        console.log("Values is ... ", values)
+    }
+
+    const handleCancel = e => {
+        e.preventDefault();
+
+        console.log("Values is ... ", values)
     }
 
     return (
-        <form className="flex flex-col justify-start items-stretch p-3 w-4/5 h-4/5" onSubmit={onSubmit}>
-            <h2 className="self-center font-bold text-3xl">{currentPageData.label}</h2>
-            <div className="flex flex-col justify-center h-full">
-                {currentPageData.fields.map(field => {
-                    switch (field.component) {
-                        case "field_group":
-                            return (
-                                <FieldGroup
-                                    key={field._uid}
-                                    field={field}
-                                    fieldChanged={fieldChanged}
-                                    values={values}>
-                                </FieldGroup>
-                            )
-                        default:
-                            return (
-                                <Field
-                                    key={field._uid}
-                                    field={field}
-                                    fieldChanged={fieldChanged}
-                                    value={values[field._uid]}
-                                />
-                            )
-                    }
-                })}
-            </div>
-        </form >
+        <div className="flex flex-col justify-between items-stretch p-3 w-4/5 h-4/5">
+            <h2 className="self-center align-start font-bold text-3xl">{schema.label}</h2>
+            <form className="p-3" onSubmit={handleSubmit}>
+                <div className="flex flex-col justify-center h-full">
+                    {schema.fields.map(field => {
+                        switch (field.type) {
+                            case "field_group":
+                                return (
+                                    <FieldGroup
+                                        key={field.id}
+                                        field={field}
+                                        onValueChange={handleValueChange}>
+                                    </FieldGroup>
+                                )
+                            default:
+                                return (
+                                    <Field
+                                        key={field.id}
+                                        field={field}
+                                        onValueChange={handleValueChange}
+                                    />
+                                )
+                        }
+                    })}
+
+                    <div className="md:flex md:items-center mb-6">
+                        <div className="md:w-1/3">
+                        </div>
+                        <div className="w-full">
+                            <button className="w-full shadow-md border-2 border-blue-400 hover:bg-blue-400 hover:text-gray-50  opacity-90
+                     focus:shadow-outline focus:outline-none 
+                     text-blue-400 font-semibold py-2 px-4 
+                     rounded cursor-pointer mb-6
+                     transform transition duration-500 
+                     hover:scale-105
+                     " type="button"
+                                onClick={e => { handleSubmit(e) }}>
+                                Submit
+                            </button>
+
+                            <button className="w-full shadow-md border-2 border-red-400 hover:bg-red-400 hover:text-gray-50 opacity-90
+                     focus:shadow-outline focus:outline-none 
+                     text-red-400 font-semibold py-2 px-4 rounded cursor-pointer transform transition duration-500 
+                     hover:scale-105" type="button"
+                                onClick={e => { }}>
+                                Cancel
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </form >
+        </div>
     )
 }
 
