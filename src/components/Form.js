@@ -70,7 +70,18 @@ const Form = ({ structure, onSubmit }) => {
     const initialize = () => {
         setValues(currentValues => {
             const newValues = schema.fields.reduce((obj, field) => {
+                // switch (field.type): {
+                //     case "field_group":
+                // }
                 if (field.type === "field_group") {
+                    obj = field.fields.reduce((subFieldObj, subField) => {
+                        subFieldObj[subField.id] = ""
+
+                        return subFieldObj
+                    }, obj)
+
+                    return obj //Object.assign(obj, x)
+                } else if (field.type === "list") {
                     obj = field.fields.reduce((subFieldObj, subField) => {
                         subFieldObj[subField.id] = ""
 

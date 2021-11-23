@@ -3,7 +3,7 @@
 import ContentCreator from "./screens/ContentCreator";
 // import Experiment from "./screens/Experiment"
 // import Home_x from "./screens/Home_x"
-// import NewsPaper from "./screens/NewsPaper"
+import NewsPaper from "./screens/NewsPaper"
 // import Upload from "./screens/Upload";
 
 //import ContentForm from "./screens/ContentForm";
@@ -17,7 +17,8 @@ function App() {
 
       {/* <NewsPaper></NewsPaper> */}
 
-      <ContentCreator />
+      {/* <ContentCreator /> */}
+      <NewsPaper />
 
       {/* <ContentForm></ContentForm> */}
 
