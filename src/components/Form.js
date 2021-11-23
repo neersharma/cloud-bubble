@@ -63,9 +63,7 @@ const FieldGroup = ({ id, fields, initialValues, onValueChange }) => {
     )
 }
 
-const Form = ({ structure }) => {
-    //const [page, setPage] = useState(0)
-    //const [currentPageData, setCurrentPageData] = useState(formData[page])
+const Form = ({ structure, onSubmit }) => {
     const [values, setValues] = useState({})
     const [schema, setSchema] = useState(structure)
 
@@ -111,7 +109,10 @@ const Form = ({ structure }) => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        console.log("Values is ... ", values)
+        //console.log("Values is ... ", values)
+        if (onSubmit) {
+            onSubmit(values)
+        }
     }
 
     const handleCancel = e => {
@@ -121,7 +122,7 @@ const Form = ({ structure }) => {
     }
 
     return (
-        <div className="flex flex-col justify-between items-stretch p-3 w-4/5 h-4/5">
+        <div className="flex flex-col justify-between items-stretch">
             <h2 className="self-center align-start font-bold text-3xl">{schema.label}</h2>
             <form className="p-3" onSubmit={handleSubmit}>
                 <div className="flex flex-col justify-center h-full">

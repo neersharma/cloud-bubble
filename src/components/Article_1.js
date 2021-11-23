@@ -48,6 +48,25 @@ Article.sampleData = {
     }
 }
 
+Article.fromForm = (values) => {
+    return {
+        children: {
+            title: {
+                link: values["title_link"],
+                text: values["title_text"]
+            },
+            photo: {
+                link: values["photo_link"],
+                alt: values["photo_alt"]
+            },
+            summary: {
+                link: values["summary_link"],
+                text: values["summary_text"]
+            }
+        }
+    }
+}
+
 Article.Schema = {
     component: "Form",
     type: "Article",
